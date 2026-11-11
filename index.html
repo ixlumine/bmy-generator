@@ -7,9 +7,9 @@
   <!-- Primary SEO Meta Tags -->
   <title>Business Model You Generator — Personal Canvas Architect & Visualizer</title>
   <meta name="title" content="Business Model You Generator — Personal Canvas Architect & Visualizer" />
-  <meta name="description" content="Aplikasi peramban mandiri (ID/EN) untuk merancang dan memvisualisasikan 9 blok Business Model You. Dilengkapi fitur directly edit di kanvas, pilihan rasio halaman (Auto, A4, 16:9, 4:3), pengaturan jarak poin, serta ekspor PDF dan PNG resolusi tinggi." />
+  <meta name="description" content="Aplikasi peramban mandiri (ID/EN) untuk merancang dan memvisualisasikan 9 blok Business Model You. Dilengkapi fitur directly edit di kanvas, pilihan rasio halaman (Auto, A4, 16:9, 4:3), serta ekspor Native Print PDF dan PNG resolusi tinggi." />
   <meta name="keywords" content="business model you, personal business model canvas, personal canvas generator, career roadmap, strategi karier, visualisasi kanvas personal, tim clark" />
-  <meta name="author" content="Business Model You Architect" />
+  <meta name="author" content="ixlumine" />
   <meta name="robots" content="index, follow" />
   <link rel="canonical" href="https://bmy-generator.netlify.app/" />
 
@@ -17,7 +17,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://bmy-generator.netlify.app/" />
   <meta property="og:title" content="Business Model You Generator — Personal Canvas Architect" />
-  <meta property="og:description" content="Rancang dan ekspor 9 blok Personal Business Model Canvas Anda dengan visual modern, directly edit di kanvas, rasio halaman presisi, dan dukungan dwibahasa (ID/EN)." />
+  <meta property="og:description" content="Rancang dan cetak 9 blok Personal Business Model Canvas Anda dengan visual modern, directly edit di kanvas, rasio halaman presisi, dan Native Vector Print (ID/EN)." />
   <meta property="og:image" content="https://bmy-generator.netlify.app/og-image.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -27,21 +27,25 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:url" content="https://bmy-generator.netlify.app/" />
   <meta name="twitter:title" content="Business Model You Generator — Personal Canvas Architect" />
-  <meta name="twitter:description" content="Visualisasikan model bisnis karier dan transisi profesional Anda dengan Personal Canvas interaktif. Ekspor resolusi tinggi instan." />
+  <meta name="twitter:description" content="Visualisasikan model bisnis karier dan transisi profesional Anda dengan Personal Canvas interaktif. Ekspor Native Print PDF & PNG resolusi tinggi." />
   <meta name="twitter:image" content="https://bmy-generator.netlify.app/og-image.png" />
 
   <!-- Theme & Favicon -->
   <meta name="theme-color" content="#0F172A" />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%232563EB' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect width='7' height='7' x='3' y='3' rx='1'/><rect width='7' height='7' x='14' y='3' rx='1'/><rect width='7' height='7' x='14' y='14' rx='1'/><rect width='7' height='7' x='3' y='14' rx='1'/></svg>" />
 
-  <!-- JSON-LD Structured Data -->
+  <!-- JSON-LD Structured Data with Repository Link -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "WebApplication",
     "name": "Business Model You Generator & Visualizer",
     "url": "https://bmy-generator.netlify.app/",
-    "description": "Aplikasi client-side dwibahasa (ID/EN) untuk memvisualisasikan dan mengekspor Personal Business Model Canvas (Business Model You) dengan directly edit pada kanvas, opsi page ratio, zoomable canvas, dan resolusi tinggi.",
+    "codeRepository": "https://github.com/ixlumine/bmy-generator",
+    "sameAs": [
+      "https://github.com/ixlumine/bmy-generator"
+    ],
+    "description": "Aplikasi client-side dwibahasa (ID/EN) untuk memvisualisasikan dan mengekspor Personal Business Model Canvas (Business Model You) dengan directly edit pada kanvas, Native Browser Print A4 Landscape, opsi page ratio, dan resolusi tinggi.",
     "applicationCategory": "ProductivityApplication",
     "operatingSystem": "All Modern Browsers",
     "offers": {
@@ -108,6 +112,20 @@
         <button type="button" class="nav-pill-btn active" data-lang="id">ID</button>
         <button type="button" class="nav-pill-btn" data-lang="en">EN</button>
       </div>
+
+      <!-- Pure SVG GitHub Link (100% Reliable Render) -->
+      <a
+        href="https://github.com/ixlumine/bmy-generator"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-icon-only btn-github-link"
+        title="GitHub Repository: ixlumine/bmy-generator"
+        aria-label="GitHub Repository"
+      >
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+          <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+        </svg>
+      </a>
 
       <div class="toolbar-divider"></div>
 
@@ -466,7 +484,7 @@
           <!-- DYNAMIC SYMMETRIC GRID ROOT -->
           <div class="bmy-canvas-grid-root" id="canvas-grid-root"></div>
 
-          <!-- CLEAN FOOTER (NO RATIO WATERMARK) -->
+          <!-- CLEAN FOOTER -->
           <div class="canvas-footer">
             <span>FRAMEWORK: BUSINESS MODEL YOU (TIM CLARK & ALEXANDER OSTERWALDER)</span>
             <span>BMY-GENERATOR.NETLIFY.APP</span>
@@ -503,6 +521,23 @@
         <button type="button" class="btn-icon-close" id="btn-close-guide"><i data-lucide="x"></i></button>
       </div>
       <article class="seo-guide-body" id="guide-body-content"></article>
+
+      <!-- GitHub Repository Link Card with Pure SVG -->
+      <div class="repo-credit-box">
+        <div class="repo-credit-left">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+          <div>
+            <strong data-i18n="repo_label">Repositori Sumber Terbuka (Open-Source)</strong>
+            <span>github.com/ixlumine/bmy-generator</span>
+          </div>
+        </div>
+        <a href="https://github.com/ixlumine/bmy-generator" target="_blank" rel="noopener noreferrer" class="btn btn-compact">
+          <span data-i18n="repo_btn">Buka GitHub</span>
+          <i data-lucide="external-link"></i>
+        </a>
+      </div>
     </div>
   </div>
 
