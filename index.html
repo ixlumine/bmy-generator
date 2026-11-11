@@ -1,0 +1,2116 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Business Model You — Personal Canvas Architect</title>
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- CDN Dependencies -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html-to-image/1.11.11/html-to-image.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <style>
+    /* ==========================================================================
+       1. APP SHELL & UI VARIABLES (SaaS Workspace)
+       ========================================================================== */
+    :root {
+      --ui-bg: #F1F5F9;
+      --ui-surface: #FFFFFF;
+      --ui-surface-hover: #F8FAFC;
+      --ui-border: #E2E8F0;
+      --ui-border-strong: #CBD5E1;
+      --ui-text: #0F172A;
+      --ui-text-muted: #64748B;
+      --ui-primary: #0F172A;
+      --ui-primary-hover: #1E293B;
+      --ui-accent: #2563EB;
+      --ui-danger: #DC2626;
+      --ui-danger-bg: #FEF2F2;
+      --ui-radius: 6px;
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--ui-bg);
+      color: var(--ui-text);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ==========================================================================
+       2. TOP NAVIGATION BAR
+       ========================================================================== */
+    .app-header {
+      height: 58px;
+      background-color: var(--ui-surface);
+      border-bottom: 1px solid var(--ui-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      flex-shrink: 0;
+      z-index: 20;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-mark {
+      width: 32px;
+      height: 32px;
+      background-color: var(--ui-primary);
+      color: #FFFFFF;
+      border-radius: var(--ui-radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand-mark svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .brand-title {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--ui-text);
+    }
+
+    .brand-subtitle {
+      font-size: 12px;
+      color: var(--ui-text-muted);
+      font-weight: 400;
+      padding-left: 10px;
+      border-left: 1px solid var(--ui-border);
+    }
+
+    .toolbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .toolbar-divider {
+      width: 1px;
+      height: 24px;
+      background-color: var(--ui-border);
+      margin: 0 4px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      height: 34px;
+      padding: 0 12px;
+      font-family: var(--font-sans);
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--ui-text);
+      background-color: var(--ui-surface);
+      border: 1px solid var(--ui-border-strong);
+      border-radius: var(--ui-radius);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    .btn:hover {
+      background-color: var(--ui-surface-hover);
+      border-color: #94A3B8;
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .btn svg {
+      width: 15px;
+      height: 15px;
+      stroke-width: 2;
+    }
+
+    .btn-primary {
+      background-color: var(--ui-primary);
+      color: #FFFFFF;
+      border-color: var(--ui-primary);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--ui-primary-hover);
+      border-color: var(--ui-primary-hover);
+    }
+
+    .btn-accent {
+      background-color: var(--ui-accent);
+      color: #FFFFFF;
+      border-color: var(--ui-accent);
+    }
+
+    .btn-accent:hover {
+      background-color: #1D4ED8;
+      border-color: #1D4ED8;
+    }
+
+    .btn-danger {
+      color: var(--ui-danger);
+      border-color: #FECACA;
+      background-color: var(--ui-danger-bg);
+    }
+
+    .btn-danger:hover {
+      background-color: #FEE2E2;
+      border-color: #FCA5A5;
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    /* ==========================================================================
+       3. SPLIT-SCREEN WORKSPACE LAYOUT
+       ========================================================================== */
+    .workspace {
+      display: grid;
+      grid-template-columns: 430px 1fr;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* Left Panel: Sidebar Controls & Inputs */
+    .sidebar {
+      background-color: var(--ui-surface);
+      border-right: 1px solid var(--ui-border);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .sidebar-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border-bottom: 1px solid var(--ui-border);
+      background-color: #F8FAFC;
+      padding: 6px 12px 0;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .tab-btn {
+      padding: 9px 12px;
+      font-family: var(--font-sans);
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--ui-text-muted);
+      background: transparent;
+      border: 1px solid transparent;
+      border-bottom: none;
+      border-radius: 6px 6px 0 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+
+    .tab-btn svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .tab-btn.active {
+      background-color: var(--ui-surface);
+      color: var(--ui-text);
+      border-color: var(--ui-border);
+      position: relative;
+      bottom: -1px;
+      padding-bottom: 10px;
+    }
+
+    .sidebar-scroll {
+      flex: 1;
+      overflow-y: auto;
+      padding: 18px 18px 40px;
+    }
+
+    .sidebar-scroll::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .sidebar-scroll::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 3px;
+    }
+
+    .tab-pane {
+      display: none;
+    }
+
+    .tab-pane.active {
+      display: block;
+    }
+
+    .panel-section {
+      margin-bottom: 22px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--ui-border);
+    }
+
+    .panel-section:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+
+    .section-heading {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--ui-text-muted);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .form-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--ui-text);
+      margin-bottom: 5px;
+    }
+
+    .form-label-left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .form-label-left svg {
+      width: 14px;
+      height: 14px;
+      color: var(--ui-text-muted);
+    }
+
+    .badge-num {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 600;
+      padding: 1px 5px;
+      background-color: #F1F5F9;
+      border: 1px solid var(--ui-border);
+      border-radius: 4px;
+      color: var(--ui-text-muted);
+    }
+
+    .form-hint {
+      font-size: 11px;
+      color: var(--ui-text-muted);
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .input-text,
+    .input-textarea {
+      width: 100%;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      color: var(--ui-text);
+      background-color: #FFFFFF;
+      border: 1px solid var(--ui-border-strong);
+      border-radius: var(--ui-radius);
+      padding: 8px 10px;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .input-text:focus,
+    .input-textarea:focus {
+      outline: none;
+      border-color: var(--ui-accent);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+    }
+
+    .input-textarea {
+      min-height: 82px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    /* Segmented Density Control */
+    .segmented-group {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      background-color: #F1F5F9;
+      padding: 3px;
+      border-radius: var(--ui-radius);
+      border: 1px solid var(--ui-border);
+    }
+
+    .segment-btn {
+      height: 28px;
+      border: none;
+      background: transparent;
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--ui-text-muted);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .segment-btn.active {
+      background-color: #FFFFFF;
+      color: var(--ui-text);
+      font-weight: 600;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+    }
+
+    /* Checkboxes */
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 10px;
+      border: 1px solid var(--ui-border);
+      border-radius: var(--ui-radius);
+      margin-bottom: 8px;
+      cursor: pointer;
+      background-color: #FAFAFA;
+    }
+
+    .checkbox-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .checkbox-row span {
+      font-size: 12.5px;
+      font-weight: 500;
+      color: var(--ui-text);
+    }
+
+    .checkbox-row input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--ui-accent);
+      cursor: pointer;
+    }
+
+    /* Theme Cards */
+    .theme-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .theme-card {
+      border: 1.5px solid var(--ui-border);
+      border-radius: var(--ui-radius);
+      padding: 10px;
+      cursor: pointer;
+      background-color: #FFFFFF;
+      transition: all 0.15s ease;
+      text-align: left;
+    }
+
+    .theme-card:hover {
+      border-color: #94A3B8;
+    }
+
+    .theme-card.active {
+      border-color: var(--ui-accent);
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+    }
+
+    .theme-swatches {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 8px;
+    }
+
+    .swatch-dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 4px;
+      border: 1px solid rgba(0,0,0,0.15);
+    }
+
+    .theme-card-name {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ui-text);
+      display: block;
+    }
+
+    .theme-card-desc {
+      font-size: 10.5px;
+      color: var(--ui-text-muted);
+      margin-top: 2px;
+      display: block;
+    }
+
+    /* Color Pickers */
+    .color-picker-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .color-field {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 8px;
+      border: 1px solid var(--ui-border);
+      border-radius: var(--ui-radius);
+      background-color: #FFFFFF;
+    }
+
+    .color-field input[type="color"] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 24px;
+      height: 24px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      background: none;
+      padding: 0;
+    }
+
+    .color-field input[type="color"]::-webkit-color-swatch-wrapper {
+      padding: 0;
+    }
+
+    .color-field input[type="color"]::-webkit-color-swatch {
+      border: 1px solid rgba(0,0,0,0.15);
+      border-radius: 4px;
+    }
+
+    .color-meta {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .color-meta-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--ui-text);
+      white-space: nowrap;
+    }
+
+    .color-meta-hex {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--ui-text-muted);
+      text-transform: uppercase;
+    }
+
+    /* ==========================================================================
+       4. RIGHT PANEL: PREVIEW WORKSPACE & PERSONAL CANVAS
+       ========================================================================== */
+    .preview-stage {
+      flex: 1;
+      overflow: auto;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-image: radial-gradient(#CBD5E1 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+
+    /* Root Canvas Element to be Rendered/Exported */
+    #bmy-canvas {
+      /* Default Theme Variables (Modern Clean Tech) */
+      --c-bg: #F8FAFC;
+      --c-card: #FFFFFF;
+      --c-text: #0F172A;
+      --c-muted: #475569;
+      --c-accent: #2563EB;
+      --c-accent-secondary: #10B981;
+      --c-border: #CBD5E1;
+      --c-radius: 8px;
+      --c-border-width: 1px;
+
+      /* Default Density Variables (Normal) */
+      --d-canvas-pad: 28px;
+      --d-grid-gap: 12px;
+      --d-card-pad: 16px;
+      --d-title-size: 12.5px;
+      --d-sub-size: 10.5px;
+      --d-body-size: 12.5px;
+      --d-line-height: 1.5;
+      --d-bullet-gap: 6px;
+
+      width: 100%;
+      max-width: 1280px;
+      min-width: 980px;
+      background-color: var(--c-bg);
+      color: var(--c-text);
+      padding: var(--d-canvas-pad);
+      border-radius: calc(var(--c-radius) + 4px);
+      border: 1px solid var(--c-border);
+      box-shadow: 0 12px 32px -8px rgba(15, 23, 42, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: var(--d-grid-gap);
+      transition: background-color 0.2s ease, color 0.2s ease, padding 0.2s ease;
+    }
+
+    /* Density Modifiers */
+    #bmy-canvas[data-density="compact"] {
+      --d-canvas-pad: 20px;
+      --d-grid-gap: 8px;
+      --d-card-pad: 11px 12px;
+      --d-title-size: 11.5px;
+      --d-sub-size: 10px;
+      --d-body-size: 11.2px;
+      --d-line-height: 1.38;
+      --d-bullet-gap: 4px;
+    }
+
+    #bmy-canvas[data-density="normal"] {
+      --d-canvas-pad: 28px;
+      --d-grid-gap: 12px;
+      --d-card-pad: 16px;
+      --d-title-size: 12.5px;
+      --d-sub-size: 10.5px;
+      --d-body-size: 12.5px;
+      --d-line-height: 1.5;
+      --d-bullet-gap: 6px;
+    }
+
+    #bmy-canvas[data-density="spacious"] {
+      --d-canvas-pad: 36px;
+      --d-grid-gap: 16px;
+      --d-card-pad: 20px;
+      --d-title-size: 13.5px;
+      --d-sub-size: 11px;
+      --d-body-size: 13.5px;
+      --d-line-height: 1.62;
+      --d-bullet-gap: 8px;
+    }
+
+    /* Toggle Visibility Modifiers */
+    #bmy-canvas[data-show-numbers="false"] .canvas-box-number {
+      display: none !important;
+    }
+
+    #bmy-canvas[data-show-icons="false"] .canvas-box-icon {
+      display: none !important;
+    }
+
+    /* Canvas Header */
+    .canvas-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      padding-bottom: 16px;
+      border-bottom: 2px solid var(--c-accent);
+      gap: 20px;
+    }
+
+    .canvas-header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .canvas-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--c-accent);
+    }
+
+    .canvas-main-title {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      color: var(--c-text);
+      line-height: 1.15;
+    }
+
+    .canvas-meta-group {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .canvas-meta-pill {
+      display: flex;
+       flex-direction: column;
+      background-color: var(--c-card);
+      border: var(--c-border-width) solid var(--c-border);
+      border-radius: var(--c-radius);
+      padding: 7px 12px;
+      min-width: 150px;
+    }
+
+    .meta-pill-label {
+      font-family: var(--font-mono);
+      font-size: 9.5px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--c-muted);
+      margin-bottom: 2px;
+    }
+
+    .meta-pill-value {
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--c-text);
+    }
+
+    /* ==========================================================================
+       5. 9-BOX BUSINESS MODEL YOU CSS GRID ARCHITECTURE
+       ========================================================================== */
+    .bmy-grid-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: var(--d-grid-gap);
+    }
+
+    /* Upper 5-Column Grid */
+    .bmy-upper-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      grid-template-rows: minmax(175px, auto) minmax(175px, auto);
+      gap: var(--d-grid-gap);
+      align-items: stretch;
+    }
+
+    /* Lower 2-Column Grid (Cost & Revenue) */
+    .bmy-lower-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-template-rows: minmax(150px, auto);
+      gap: var(--d-grid-gap);
+      align-items: stretch;
+    }
+
+    /* Exact Grid Placements for Upper 7 Boxes */
+    .area-partners {
+      grid-column: 1 / 2;
+      grid-row: 1 / 3;
+    }
+
+    .area-activities {
+      grid-column: 2 / 3;
+      grid-row: 1 / 2;
+    }
+
+    .area-resources {
+      grid-column: 2 / 3;
+      grid-row: 2 / 3;
+    }
+
+    .area-value {
+      grid-column: 3 / 4;
+      grid-row: 1 / 3;
+    }
+
+    .area-relationships {
+      grid-column: 4 / 5;
+      grid-row: 1 / 2;
+    }
+
+    .area-channels {
+      grid-column: 4 / 5;
+      grid-row: 2 / 3;
+    }
+
+    .area-segments {
+      grid-column: 5 / 6;
+      grid-row: 1 / 3;
+    }
+
+    /* Individual Canvas Card Styling */
+    .canvas-box {
+      background-color: var(--c-card);
+      border: var(--c-border-width) solid var(--c-border);
+      border-radius: var(--c-radius);
+      padding: var(--d-card-pad);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      position: relative;
+      overflow-wrap: break-word;
+      word-break: break-word;
+    }
+
+    /* Subtle Highlight for Core Value Proposition & Revenue Streams */
+    .canvas-box.box-featured {
+      border-top: 3px solid var(--c-accent);
+    }
+
+    .canvas-box.box-secondary-accent {
+      border-top: 3px solid var(--c-accent-secondary);
+    }
+
+    .canvas-box-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 8px;
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+      border-bottom: 1px solid var(--c-border);
+    }
+
+    .canvas-box-title-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .canvas-box-title-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .canvas-box-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--c-accent);
+      flex-shrink: 0;
+    }
+
+    .canvas-box-icon svg {
+      width: 15px;
+      height: 15px;
+      stroke-width: 2.2;
+    }
+
+    .canvas-box-title {
+      font-size: var(--d-title-size);
+      font-weight: 700;
+      color: var(--c-text);
+      letter-spacing: -0.01em;
+    }
+
+    .canvas-box-subtitle {
+      font-size: var(--d-sub-size);
+      font-weight: 500;
+      color: var(--c-muted);
+    }
+
+    .canvas-box-number {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 600;
+      color: var(--c-accent);
+      background-color: var(--c-bg);
+      border: 1px solid var(--c-border);
+      padding: 2px 6px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+
+    /* Swiss High-Contrast Specific Overrides */
+    #bmy-canvas[data-theme="swiss-contrast"] .canvas-box-header {
+      background-color: var(--c-accent);
+      margin: calc(var(--d-card-pad) * -1) calc(var(--d-card-pad) * -1) 12px calc(var(--d-card-pad) * -1);
+      padding: 8px 12px;
+      border-bottom: var(--c-border-width) solid var(--c-border);
+    }
+
+    #bmy-canvas[data-theme="swiss-contrast"] .canvas-box-icon,
+    #bmy-canvas[data-theme="swiss-contrast"] .canvas-box-title,
+    #bmy-canvas[data-theme="swiss-contrast"] .canvas-box-subtitle,
+    #bmy-canvas[data-theme="swiss-contrast"] .canvas-box-number {
+      color: #000000;
+    }
+
+    #bmy-canvas[data-theme="swiss-contrast"] .canvas-box-number {
+      background-color: #FFFFFF;
+      border-color: #000000;
+    }
+
+    /* Bullet List Inside Canvas Card */
+    .canvas-bullet-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: var(--d-bullet-gap);
+      margin: 0;
+      padding: 0;
+      flex: 1;
+    }
+
+    .canvas-bullet-item {
+      position: relative;
+      padding-left: 14px;
+      font-size: var(--d-body-size);
+      line-height: var(--d-line-height);
+      color: var(--c-text);
+    }
+
+    .canvas-bullet-item::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: calc(0.5em * var(--d-line-height) - 2px);
+      width: 5px;
+      height: 5px;
+      border-radius: 1px;
+      background-color: var(--c-accent);
+    }
+
+    .canvas-empty-placeholder {
+      font-size: var(--d-sub-size);
+      font-style: italic;
+      color: var(--c-muted);
+      opacity: 0.65;
+    }
+
+    /* Canvas Footer */
+    .canvas-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 8px;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--c-muted);
+    }
+
+    /* ==========================================================================
+       6. MODAL & TOAST NOTIFICATION
+       ========================================================================== */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(15, 23, 42, 0.45);
+      backdrop-filter: blur(2px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-dialog {
+      background-color: var(--ui-surface);
+      border: 1px solid var(--ui-border);
+      border-radius: 8px;
+      width: 100%;
+      max-width: 400px;
+      padding: 20px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15);
+    }
+
+    .modal-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--ui-text);
+      margin-bottom: 8px;
+    }
+
+    .modal-desc {
+      font-size: 13px;
+      color: var(--ui-text-muted);
+      line-height: 1.5;
+      margin-bottom: 18px;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .toast-notification {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #0F172A;
+      color: #FFFFFF;
+      padding: 10px 14px;
+      border-radius: var(--ui-radius);
+      font-size: 12.5px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+      transform: translateY(80px);
+      opacity: 0;
+      transition: all 0.25s ease;
+      z-index: 120;
+    }
+
+    .toast-notification.visible {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .toast-notification svg {
+      width: 15px;
+      height: 15px;
+      color: #10B981;
+    }
+
+    /* ==========================================================================
+       7. RESPONSIVE BREAKPOINTS & A4 LANDSCAPE PRINT RULES
+       ========================================================================== */
+    @media (max-width: 1100px) {
+      body {
+        height: auto;
+        overflow: auto;
+      }
+      .app-header {
+        height: auto;
+        padding: 12px 16px;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .toolbar-actions {
+        flex-wrap: wrap;
+      }
+      .workspace {
+        grid-template-columns: 1fr;
+        overflow: visible;
+      }
+      .sidebar {
+        border-right: none;
+        border-bottom: 1px solid var(--ui-border);
+        max-height: none;
+      }
+      .preview-stage {
+        padding: 16px;
+        align-items: flex-start;
+      }
+    }
+
+    @media print {
+      @page {
+        size: A4 landscape;
+        margin: 8mm;
+      }
+      body {
+        background: #FFFFFF !important;
+        height: auto !important;
+        overflow: visible !important;
+      }
+      .app-header,
+      .sidebar,
+      .modal-backdrop,
+      .toast-notification {
+        display: none !important;
+      }
+      .workspace {
+        display: block !important;
+      }
+      .preview-stage {
+        padding: 0 !important;
+        background: none !important;
+        overflow: visible !important;
+      }
+      #bmy-canvas {
+        min-width: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-shadow: none !important;
+        border: 1px solid var(--c-border) !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP NAVIGATION BAR -->
+  <header class="app-header">
+    <div class="brand-group">
+      <div class="brand-mark">
+        <i data-lucide="layout-grid"></i>
+      </div>
+      <span class="brand-title">Business Model You</span>
+      <span class="brand-subtitle">Personal Canvas Architect</span>
+    </div>
+
+    <div class="toolbar-actions">
+      <button type="button" class="btn" id="btn-load-sample" title="Muat draf sampel transisi karier">
+        <i data-lucide="file-text"></i>
+        <span>Load Sample</span>
+      </button>
+      <button type="button" class="btn btn-danger" id="btn-clear-all" title="Kosongkan seluruh isian kanvas">
+        <i data-lucide="trash-2"></i>
+        <span>Clear All</span>
+      </button>
+
+      <div class="toolbar-divider"></div>
+
+      <input type="file" id="input-import-json" accept=".json" style="display: none;" />
+      <button type="button" class="btn" id="btn-import-json" title="Unggah file konfigurasi JSON">
+        <i data-lucide="upload"></i>
+        <span>Import JSON</span>
+      </button>
+      <button type="button" class="btn" id="btn-export-json" title="Unduh state data dan tema dalam format JSON">
+        <i data-lucide="download"></i>
+        <span>Export JSON</span>
+      </button>
+
+      <div class="toolbar-divider"></div>
+
+      <button type="button" class="btn btn-primary" id="btn-export-png" title="Unduh gambar resolusi tinggi (3x Scale)">
+        <i data-lucide="image"></i>
+        <span>Export PNG</span>
+      </button>
+      <button type="button" class="btn btn-accent" id="btn-export-pdf" title="Unduh dokumen PDF A4 Landscape">
+        <i data-lucide="printer"></i>
+        <span>Export PDF</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN SPLIT-SCREEN WORKSPACE -->
+  <main class="workspace">
+
+    <!-- LEFT PANEL: FORM INPUT & CONTROLS -->
+    <aside class="sidebar">
+      <div class="sidebar-tabs">
+        <button type="button" class="tab-btn active" data-tab="tab-content">
+          <i data-lucide="pen-tool"></i>
+          <span>Isi Kanvas (01-09)</span>
+        </button>
+        <button type="button" class="tab-btn" data-tab="tab-appearance">
+          <i data-lucide="sliders"></i>
+          <span>Layout & Tema</span>
+        </button>
+      </div>
+
+      <div class="sidebar-scroll">
+        <!-- TAB 1: METADATA & 9 BMY ELEMENTS -->
+        <div id="tab-content" class="tab-pane active">
+          <div class="panel-section">
+            <div class="section-heading">
+              <span>Profil & Metadata Kanvas</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="meta-name">Nama Lengkap</label>
+              <input type="text" id="meta-name" class="input-text" placeholder="Masukkan nama lengkap Anda" />
+            </div>
+            <div class="form-grid-2">
+              <div class="form-group">
+                <label class="form-label" for="meta-role">Target Karier / Posisi</label>
+                <input type="text" id="meta-role" class="input-text" placeholder="Contoh: EdTech Engineer" />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="meta-date">Tanggal Pembaruan</label>
+                <input type="date" id="meta-date" class="input-text" />
+              </div>
+            </div>
+          </div>
+
+          <div class="panel-section">
+            <div class="section-heading">
+              <span>9 Elemen Business Model You</span>
+              <span style="font-weight: 500; text-transform: none;">1 baris = 1 poin</span>
+            </div>
+            <!-- Dynamically populated by JS for clean maintainability -->
+            <div id="bmy-form-fields"></div>
+          </div>
+        </div>
+
+        <!-- TAB 2: LAYOUT, BOX SIZING & THEMES -->
+        <div id="tab-appearance" class="tab-pane">
+          <!-- Layout & Density Controls -->
+          <div class="panel-section">
+            <div class="section-heading">
+              <span>Kepadatan Teks & Box Sizing</span>
+            </div>
+            <div class="form-group">
+              <span class="form-hint">Mengatur padding kartu, ukuran tipografi, dan spasi antar poin secara adaptif.</span>
+              <div class="segmented-group" id="density-selector">
+                <button type="button" class="segment-btn" data-density="compact">Compact</button>
+                <button type="button" class="segment-btn active" data-density="normal">Normal</button>
+                <button type="button" class="segment-btn" data-density="spacious">Spacious</button>
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-top: 14px;">
+              <label class="checkbox-row">
+                <span>Tampilkan Nomor Blok (01 - 09)</span>
+                <input type="checkbox" id="toggle-numbers" checked />
+              </label>
+              <label class="checkbox-row">
+                <span>Tampilkan Ikon Kategori SVG</span>
+                <input type="checkbox" id="toggle-icons" checked />
+              </label>
+            </div>
+          </div>
+
+          <!-- Preset Themes -->
+          <div class="panel-section">
+            <div class="section-heading">
+              <span>Preset Tema Visual</span>
+            </div>
+            <div class="theme-grid" id="theme-preset-grid">
+              <!-- Theme 1: Modern Clean Tech -->
+              <button type="button" class="theme-card active" data-theme="modern-tech">
+                <div class="theme-swatches">
+                  <span class="swatch-dot" style="background: #F8FAFC;"></span>
+                  <span class="swatch-dot" style="background: #FFFFFF;"></span>
+                  <span class="swatch-dot" style="background: #2563EB;"></span>
+                  <span class="swatch-dot" style="background: #10B981;"></span>
+                </div>
+                <span class="theme-card-name">Modern Clean Tech</span>
+                <span class="theme-card-desc">Light Slate, Putih & Kobalt</span>
+              </button>
+
+              <!-- Theme 2: Obsidian Dark -->
+              <button type="button" class="theme-card" data-theme="obsidian-dark">
+                <div class="theme-swatches">
+                  <span class="swatch-dot" style="background: #0B0F17;"></span>
+                  <span class="swatch-dot" style="background: #1E293B;"></span>
+                  <span class="swatch-dot" style="background: #06B6D4;"></span>
+                  <span class="swatch-dot" style="background: #F1F5F9;"></span>
+                </div>
+                <span class="theme-card-name">Obsidian Dark</span>
+                <span class="theme-card-desc">Charcoal, Dark Slate & Cyan</span>
+              </button>
+
+              <!-- Theme 3: Warm Academic -->
+              <button type="button" class="theme-card" data-theme="warm-academic">
+                <div class="theme-swatches">
+                  <span class="swatch-dot" style="background: #FDFBF7;"></span>
+                  <span class="swatch-dot" style="background: #FAF7F0;"></span>
+                  <span class="swatch-dot" style="background: #C2410C;"></span>
+                  <span class="swatch-dot" style="background: #D6D3D1;"></span>
+                </div>
+                <span class="theme-card-name">Warm Academic</span>
+                <span class="theme-card-desc">Kertas Gading & Terracotta</span>
+              </button>
+
+              <!-- Theme 4: Swiss High-Contrast -->
+              <button type="button" class="theme-card" data-theme="swiss-contrast">
+                <div class="theme-swatches">
+                  <span class="swatch-dot" style="background: #FFFFFF;"></span>
+                  <span class="swatch-dot" style="background: #000000;"></span>
+                  <span class="swatch-dot" style="background: #FACC15;"></span>
+                </div>
+                <span class="theme-card-name">Swiss High-Contrast</span>
+                <span class="theme-card-desc">Border Tegas 1.5px & Stabilo</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Manual Custom Color Override -->
+          <div class="panel-section">
+            <div class="section-heading">
+              <span>Kustomisasi Warna Manual</span>
+            </div>
+            <span class="form-hint">Sesuaikan warna kanvas secara spesifik di luar preset tema.</span>
+            <div class="color-picker-grid">
+              <label class="color-field">
+                <input type="color" id="color-canvas-bg" value="#F8FAFC" />
+                <div class="color-meta">
+                  <span class="color-meta-label">Canvas Background</span>
+                  <span class="color-meta-hex" id="hex-canvas-bg">#F8FAFC</span>
+                </div>
+              </label>
+
+              <label class="color-field">
+                <input type="color" id="color-card-bg" value="#FFFFFF" />
+                <div class="color-meta">
+                  <span class="color-meta-label">Card Background</span>
+                  <span class="color-meta-hex" id="hex-card-bg">#FFFFFF</span>
+                </div>
+              </label>
+
+              <label class="color-field">
+                <input type="color" id="color-accent" value="#2563EB" />
+                <div class="color-meta">
+                  <span class="color-meta-label">Accent Color</span>
+                  <span class="color-meta-hex" id="hex-accent">#2563EB</span>
+                </div>
+              </label>
+
+              <label class="color-field">
+                <input type="color" id="color-border" value="#CBD5E1" />
+                <div class="color-meta">
+                  <span class="color-meta-label">Border Color</span>
+                  <span class="color-meta-hex" id="hex-border">#CBD5E1</span>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- RIGHT PANEL: LIVE INTERACTIVE CANVAS PREVIEW -->
+    <section class="preview-stage">
+      <div id="bmy-canvas" data-theme="modern-tech" data-density="normal" data-show-numbers="true" data-show-icons="true">
+
+        <!-- Canvas Header -->
+        <div class="canvas-header">
+          <div class="canvas-header-left">
+            <span class="canvas-eyebrow">Business Model You — Personal Career Architecture</span>
+            <h1 class="canvas-main-title" id="preview-name">Nama Lengkap</h1>
+          </div>
+
+          <div class="canvas-meta-group">
+            <div class="canvas-meta-pill">
+              <span class="meta-pill-label">Target Karier / Posisi</span>
+              <span class="meta-pill-value" id="preview-role">-</span>
+            </div>
+            <div class="canvas-meta-pill" style="min-width: 120px;">
+              <span class="meta-pill-label">Tanggal</span>
+              <span class="meta-pill-value" id="preview-date">-</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 9-Box Official Business Model You Grid -->
+        <div class="bmy-grid-wrapper">
+          <!-- Upper Row: 5 Columns (7 Elements) -->
+          <div class="bmy-upper-grid" id="canvas-upper-grid"></div>
+
+          <!-- Lower Row: 2 Wide Columns (Cost Structure & Revenue Streams) -->
+          <div class="bmy-lower-grid" id="canvas-lower-grid"></div>
+        </div>
+
+        <!-- Canvas Footer -->
+        <div class="canvas-footer">
+          <span>FRAMEWORK: BUSINESS MODEL YOU (TIM CLARK & ALEXANDER OSTERWALDER)</span>
+          <span>PERSONAL STRATEGIC CANVAS</span>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- CLEAR ALL CONFIRMATION MODAL -->
+  <div class="modal-backdrop" id="modal-clear">
+    <div class="modal-dialog">
+      <h3 class="modal-title">Konfirmasi Kosongkan Kanvas</h3>
+      <p class="modal-desc">Seluruh teks pada kesembilan blok Business Model You dan metadata profil akan dihapus. Tindakan ini tidak dapat dibatalkan.</p>
+      <div class="modal-actions">
+        <button type="button" class="btn" id="btn-cancel-clear">Batal</button>
+        <button type="button" class="btn btn-danger" id="btn-confirm-clear">Kosongkan Sekarang</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATUS TOAST -->
+  <div class="toast-notification" id="toast">
+    <i data-lucide="check-circle-2"></i>
+    <span id="toast-text">Perubahan berhasil disimpan</span>
+  </div>
+
+  <!-- APPLICATION VANILLA JAVASCRIPT -->
+  <script>
+    (function () {
+      'use strict';
+
+      const STORAGE_KEY = 'bmy_personal_canvas_state_v1';
+
+      /* ----------------------------------------------------------------------
+         1. SCHEMA DEFINITIONS: 9 BMY BLOCKS & THEME PRESETS
+         ---------------------------------------------------------------------- */
+      const BMY_SCHEMA = [
+        {
+          id: 'partners',
+          num: '01',
+          title: 'Key Partners',
+          subtitle: 'Who Helps You',
+          icon: 'handshake',
+          areaClass: 'area-partners',
+          rowGroup: 'upper',
+          accentType: 'default'
+        },
+        {
+          id: 'activities',
+          num: '02',
+          title: 'Key Activities',
+          subtitle: 'What You Do',
+          icon: 'activity',
+          areaClass: 'area-activities',
+          rowGroup: 'upper',
+          accentType: 'default'
+        },
+        {
+          id: 'resources',
+          num: '03',
+          title: 'Key Resources',
+          subtitle: 'Who You Are & What You Have',
+          icon: 'layers',
+          areaClass: 'area-resources',
+          rowGroup: 'upper',
+          accentType: 'default'
+        },
+        {
+          id: 'value',
+          num: '04',
+          title: 'Value Proposition',
+          subtitle: 'How You Help',
+          icon: 'sparkles',
+          areaClass: 'area-value',
+          rowGroup: 'upper',
+          accentType: 'featured'
+        },
+        {
+          id: 'relationships',
+          num: '05',
+          title: 'Customer Relationships',
+          subtitle: 'How You Interact',
+          icon: 'messages-square',
+          areaClass: 'area-relationships',
+          rowGroup: 'upper',
+          accentType: 'default'
+        },
+        {
+          id: 'channels',
+          num: '06',
+          title: 'Channels',
+          subtitle: 'How They Know You & Deliver',
+          icon: 'share-2',
+          areaClass: 'area-channels',
+          rowGroup: 'upper',
+          accentType: 'default'
+        },
+        {
+          id: 'segments',
+          num: '07',
+          title: 'Customer Segments',
+          subtitle: 'Who You Help',
+          icon: 'users',
+          areaClass: 'area-segments',
+          rowGroup: 'upper',
+          accentType: 'default'
+        },
+        {
+          id: 'costs',
+          num: '08',
+          title: 'Cost Structure',
+          subtitle: 'What You Give (Time, Energy & Investment)',
+          icon: 'scale',
+          areaClass: 'area-costs',
+          rowGroup: 'lower',
+          accentType: 'default'
+        },
+        {
+          id: 'revenues',
+          num: '09',
+          title: 'Revenue Streams',
+          subtitle: 'What You Get (Compensation & Fulfillment)',
+          icon: 'trending-up',
+          areaClass: 'area-revenues',
+          rowGroup: 'lower',
+          accentType: 'secondary'
+        }
+      ];
+
+      const THEME_PRESETS = {
+        'modern-tech': {
+          canvasBg: '#F8FAFC',
+          cardBg: '#FFFFFF',
+          textColor: '#0F172A',
+          mutedColor: '#475569',
+          accentColor: '#2563EB',
+          secondaryAccent: '#10B981',
+          borderColor: '#CBD5E1',
+          radius: '8px',
+          borderWidth: '1px'
+        },
+        'obsidian-dark': {
+          canvasBg: '#0B0F17',
+          cardBg: '#1E293B',
+          textColor: '#F1F5F9',
+          mutedColor: '#94A3B8',
+          accentColor: '#06B6D4',
+          secondaryAccent: '#22D3EE',
+          borderColor: '#334155',
+          radius: '8px',
+          borderWidth: '1px'
+        },
+        'warm-academic': {
+          canvasBg: '#FDFBF7',
+          cardBg: '#FAF7F0',
+          textColor: '#1C1917',
+          mutedColor: '#57534E',
+          accentColor: '#C2410C',
+          secondaryAccent: '#B45309',
+          borderColor: '#D6D3D1',
+          radius: '6px',
+          borderWidth: '1px'
+        },
+        'swiss-contrast': {
+          canvasBg: '#FFFFFF',
+          cardBg: '#FFFFFF',
+          textColor: '#000000',
+          mutedColor: '#262626',
+          accentColor: '#FACC15',
+          secondaryAccent: '#000000',
+          borderColor: '#000000',
+          radius: '0px',
+          borderWidth: '1.5px'
+        }
+      };
+
+      /* ----------------------------------------------------------------------
+         2. SAMPLE DATA PRESET
+         ---------------------------------------------------------------------- */
+    function getSampleState() {
+            return {
+            meta: {
+                name: "Nama Lengkap Anda",
+                role: "Target Posisi / Karier / Spesialisasi",
+                date: "2026-11-11" // Format YYYY-MM-DD
+            },
+            elements: {
+                // Pisahkan setiap poin dengan tanda baris baru (\n)
+                partners: [
+                "Pihak, mentor, kolega, atau komunitas yang mendukung Anda",
+                "Partner akuntabilitas atau rekan kolaborasi proyek",
+                "Penyedia platform, alat, atau infrastruktur pendukung"
+                ].join('\n'),
+
+                activities: [
+                "Aktivitas kunci yang rutin Anda kerjakan untuk menghasilkan nilai",
+                "Eksplorasi teknis, riset arsitektur, atau pembuatan prototipe",
+                "Pengembangan keahlian spesifik atau sertifikasi"
+                ].join('\n'),
+
+                resources: [
+                "Keahlian teknis dan domain knowledge utama yang Anda kuasai",
+                "Aset intelektual, repositori portofolio, atau sistem yang Anda miliki",
+                "Karakter personal, daya tahan kognitif, dan etos kerja"
+                ].join('\n'),
+
+                value: [
+                "Solusi utama yang Anda tawarkan kepada pengguna atau organisasi",
+                "Dampak nyata: efisiensi, skalabilitas, atau simplifikasi proses",
+                "Diferensiasi unik yang membedakan Anda dari talenta lain"
+                ].join('\n'),
+
+                relationships: [
+                "Cara Anda membangun kepercayaan dan berinteraksi dengan pemangku kepentingan",
+                "Gaya komunikasi: asinkron berbasis dokumentasi presisi, konsultatif, atau hands-on",
+                "Transparansi pelaporan progres dan akuntabilitas hasil"
+                ].join('\n'),
+
+                channels: [
+                "Kanal utama orang menemukan dan melihat kapabilitas Anda (GitHub, LinkedIn, Website)",
+                "Cara Anda mendemonstrasikan hasil kerja secara langsung",
+                "Tulisan teknis, studi kasus, atau dokumentasi publik"
+                ].join('\n'),
+
+                segments: [
+                "Pihak spesifik yang paling membutuhkan solusi dan keahlian Anda",
+                "Karakteristik tim, industri, atau klien yang menjadi target utama",
+                "Pembuat keputusan atau pengguna akhir dari sistem yang Anda bangun"
+                ].join('\n'),
+
+                costs: [
+                "Waktu, fokus mental, dan energi yang Anda investasikan setiap minggu",
+                "Biaya infrastruktur, langganan alat bantu, atau biaya pembelajaran",
+                "Trade-off waktu luang demi mencapai target jangka panjang"
+                ].join('\n'),
+
+                revenues: [
+                "Kompensasi finansial utama (gaji, royalti, retainer, kontrak proyek)",
+                "Aset jangka panjang: reputasi, portofolio kredibel, dan jaringan profesional",
+                "Kepuasan personal, otonomi kerja, dan kejelasan arah pengembangan karier"
+                ].join('\n')
+            },
+            settings: {
+                density: "normal", // 'compact' | 'normal' | 'spacious'
+                showNumbers: true,
+                showIcons: true,
+                theme: "modern-tech", // 'modern-tech' | 'obsidian-dark' | 'warm-academic' | 'swiss-contrast'
+                customColors: {
+                canvasBg: "#F8FAFC",
+                cardBg: "#FFFFFF",
+                accentColor: "#2563EB",
+                borderColor: "#CBD5E1"
+                }
+            }
+            };
+        }
+
+      /* ----------------------------------------------------------------------
+         3. STATE MANAGEMENT & DOM INITIALIZATION
+         ---------------------------------------------------------------------- */
+      let state = loadStateFromStorage();
+
+      function loadStateFromStorage() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (parsed && parsed.meta && parsed.elements && parsed.settings) {
+              return parsed;
+            }
+          }
+        } catch (err) {
+          console.warn('Gagal membaca localStorage, memuat sampel default.', err);
+        }
+        return getSampleState();
+      }
+
+      function saveStateToStorage() {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch (err) {
+          console.error('Gagal menyimpan state ke localStorage:', err);
+        }
+      }
+
+      /* Build Left Form Inputs & Right Canvas Cards Dynamically */
+      function buildDOMStructure() {
+        const formContainer = document.getElementById('bmy-form-fields');
+        const upperGrid = document.getElementById('canvas-upper-grid');
+        const lowerGrid = document.getElementById('canvas-lower-grid');
+
+        formContainer.innerHTML = '';
+        upperGrid.innerHTML = '';
+        lowerGrid.innerHTML = '';
+
+        BMY_SCHEMA.forEach((item) => {
+          // 1. Create Form Field in Sidebar
+          const group = document.createElement('div');
+          group.className = 'form-group';
+          group.innerHTML = `
+            <label class="form-label" for="field-${item.id}">
+              <span class="form-label-left">
+                <i data-lucide="${item.icon}"></i>
+                <span>${item.title}</span>
+              </span>
+              <span class="badge-num">${item.num}</span>
+            </label>
+            <span class="form-hint">${item.subtitle}</span>
+            <textarea
+              id="field-${item.id}"
+              data-element="${item.id}"
+              class="input-textarea"
+              placeholder="Ketik poin untuk ${item.title} (pisahkan dengan baris baru)..."
+            ></textarea>
+          `;
+          formContainer.appendChild(group);
+
+          // 2. Create Canvas Box in Right Preview
+          const box = document.createElement('article');
+          let extraAccentClass = '';
+          if (item.accentType === 'featured') extraAccentClass = 'box-featured';
+          if (item.accentType === 'secondary') extraAccentClass = 'box-secondary-accent';
+
+          box.className = `canvas-box ${item.areaClass} ${extraAccentClass}`.trim();
+          box.innerHTML = `
+            <header class="canvas-box-header">
+              <div class="canvas-box-title-wrap">
+                <div class="canvas-box-title-row">
+                  <span class="canvas-box-icon"><i data-lucide="${item.icon}"></i></span>
+                  <h2 class="canvas-box-title">${item.title}</h2>
+                </div>
+                <span class="canvas-box-subtitle">${item.subtitle}</span>
+              </div>
+              <span class="canvas-box-number">${item.num}</span>
+            </header>
+            <ul class="canvas-bullet-list" id="preview-list-${item.id}"></ul>
+          `;
+
+          if (item.rowGroup === 'upper') {
+            upperGrid.appendChild(box);
+          } else {
+            lowerGrid.appendChild(box);
+          }
+        });
+
+        lucide.createIcons();
+      }
+
+      /* ----------------------------------------------------------------------
+         4. RENDER & SYNC ENGINE
+         ---------------------------------------------------------------------- */
+      function syncFormFromState() {
+        document.getElementById('meta-name').value = state.meta.name || '';
+        document.getElementById('meta-role').value = state.meta.role || '';
+        document.getElementById('meta-date').value = state.meta.date || '';
+
+        BMY_SCHEMA.forEach((item) => {
+          const textarea = document.getElementById(`field-${item.id}`);
+          if (textarea) {
+            textarea.value = state.elements[item.id] || '';
+          }
+        });
+
+        // Sync Density Buttons
+        document.querySelectorAll('#density-selector .segment-btn').forEach((btn) => {
+          btn.classList.toggle('active', btn.dataset.density === state.settings.density);
+        });
+
+        // Sync Checkboxes
+        document.getElementById('toggle-numbers').checked = Boolean(state.settings.showNumbers);
+        document.getElementById('toggle-icons').checked = Boolean(state.settings.showIcons);
+
+        // Sync Theme Cards
+        document.querySelectorAll('#theme-preset-grid .theme-card').forEach((card) => {
+          card.classList.toggle('active', card.dataset.theme === state.settings.theme);
+        });
+
+        // Sync Color Pickers
+        const c = state.settings.customColors;
+        document.getElementById('color-canvas-bg').value = c.canvasBg;
+        document.getElementById('hex-canvas-bg').textContent = c.canvasBg;
+
+        document.getElementById('color-card-bg').value = c.cardBg;
+        document.getElementById('hex-card-bg').textContent = c.cardBg;
+
+        document.getElementById('color-accent').value = c.accentColor;
+        document.getElementById('hex-accent').textContent = c.accentColor;
+
+        document.getElementById('color-border').value = c.borderColor;
+        document.getElementById('hex-border').textContent = c.borderColor;
+      }
+
+      function renderCanvasPreview() {
+        const canvas = document.getElementById('bmy-canvas');
+
+        // 1. Metadata
+        document.getElementById('preview-name').textContent =
+          state.meta.name.trim() || 'Nama Lengkap Anda';
+        document.getElementById('preview-role').textContent =
+          state.meta.role.trim() || 'Target Karier / Posisi';
+        document.getElementById('preview-date').textContent =
+          state.meta.date.trim() || '-';
+
+        // 2. 9 Elements Bullet Points
+        BMY_SCHEMA.forEach((item) => {
+          const listEl = document.getElementById(`preview-list-${item.id}`);
+          const rawText = state.elements[item.id] || '';
+          const lines = rawText
+            .split(/\r?\n/)
+            .map((line) => line.replace(/^[-*•]\s*/, '').trim())
+            .filter((line) => line.length > 0);
+
+          listEl.innerHTML = '';
+
+          if (lines.length === 0) {
+            const emptyLi = document.createElement('li');
+            emptyLi.className = 'canvas-empty-placeholder';
+            emptyLi.textContent = 'Belum ada poin yang ditambahkan.';
+            listEl.appendChild(emptyLi);
+          } else {
+            lines.forEach((lineText) => {
+              const li = document.createElement('li');
+              li.className = 'canvas-bullet-item';
+              li.textContent = lineText;
+              listEl.appendChild(li);
+            });
+          }
+        });
+
+        // 3. Attributes for Density & Visibility
+        canvas.setAttribute('data-density', state.settings.density);
+        canvas.setAttribute('data-show-numbers', String(state.settings.showNumbers));
+        canvas.setAttribute('data-show-icons', String(state.settings.showIcons));
+        canvas.setAttribute('data-theme', state.settings.theme);
+
+        // 4. CSS Variables for Theme & Custom Colors
+        const preset = THEME_PRESETS[state.settings.theme] || THEME_PRESETS['modern-tech'];
+        const custom = state.settings.customColors;
+
+        canvas.style.setProperty('--c-bg', custom.canvasBg || preset.canvasBg);
+        canvas.style.setProperty('--c-card', custom.cardBg || preset.cardBg);
+        canvas.style.setProperty('--c-accent', custom.accentColor || preset.accentColor);
+        canvas.style.setProperty('--c-border', custom.borderColor || preset.borderColor);
+
+        // Derive optimal text contrast based on card background luminance
+        const effectiveCardBg = custom.cardBg || preset.cardBg;
+        const isDarkCard = getLuminance(effectiveCardBg) < 0.35;
+        const textColor = isDarkCard ? '#F1F5F9' : preset.textColor;
+        const mutedColor = isDarkCard ? '#94A3B8' : preset.mutedColor;
+
+        canvas.style.setProperty('--c-text', textColor);
+        canvas.style.setProperty('--c-muted', mutedColor);
+        canvas.style.setProperty('--c-accent-secondary', preset.secondaryAccent);
+        canvas.style.setProperty('--c-radius', preset.radius);
+        canvas.style.setProperty('--c-border-width', preset.borderWidth);
+      }
+
+      /* Helper to calculate relative luminance of a hex color */
+      function getLuminance(hex) {
+        const cleanHex = hex.replace('#', '');
+        if (cleanHex.length !== 6) return 1;
+        const r = parseInt(cleanHex.substring(0, 2), 16) / 255;
+        const g = parseInt(cleanHex.substring(2, 4), 16) / 255;
+        const b = parseInt(cleanHex.substring(4, 6), 16) / 255;
+        return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+      }
+
+      /* ----------------------------------------------------------------------
+         5. EVENT LISTENERS & INTERACTIONS
+         ---------------------------------------------------------------------- */
+      function bindEvents() {
+        // Sidebar Tab Switching
+        document.querySelectorAll('.sidebar-tabs .tab-btn').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            document.querySelectorAll('.sidebar-tabs .tab-btn').forEach((b) => b.classList.remove('active'));
+            document.querySelectorAll('.tab-pane').forEach((p) => p.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById(btn.dataset.tab).classList.add('active');
+          });
+        });
+
+        // Metadata Inputs
+        ['name', 'role', 'date'].forEach((key) => {
+          const input = document.getElementById(`meta-${key}`);
+          input.addEventListener('input', (e) => {
+            state.meta[key] = e.target.value;
+            renderCanvasPreview();
+            saveStateToStorage();
+          });
+        });
+
+        // 9 BMY Textarea Inputs
+        document.getElementById('bmy-form-fields').addEventListener('input', (e) => {
+          if (e.target && e.target.matches('textarea[data-element]')) {
+            const key = e.target.dataset.element;
+            state.elements[key] = e.target.value;
+            renderCanvasPreview();
+            saveStateToStorage();
+          }
+        });
+
+        // Density Selector
+        document.querySelectorAll('#density-selector .segment-btn').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            state.settings.density = btn.dataset.density;
+            syncFormFromState();
+            renderCanvasPreview();
+            saveStateToStorage();
+          });
+        });
+
+        // Checkboxes (Numbers & Icons)
+        document.getElementById('toggle-numbers').addEventListener('change', (e) => {
+          state.settings.showNumbers = e.target.checked;
+          renderCanvasPreview();
+          saveStateToStorage();
+        });
+
+        document.getElementById('toggle-icons').addEventListener('change', (e) => {
+          state.settings.showIcons = e.target.checked;
+          renderCanvasPreview();
+          saveStateToStorage();
+        });
+
+        // Preset Theme Selection
+        document.querySelectorAll('#theme-preset-grid .theme-card').forEach((card) => {
+          card.addEventListener('click', () => {
+            const themeKey = card.dataset.theme;
+            const preset = THEME_PRESETS[themeKey];
+            if (!preset) return;
+
+            state.settings.theme = themeKey;
+            state.settings.customColors = {
+              canvasBg: preset.canvasBg,
+              cardBg: preset.cardBg,
+              accentColor: preset.accentColor,
+              borderColor: preset.borderColor
+            };
+
+            syncFormFromState();
+            renderCanvasPreview();
+            saveStateToStorage();
+            showToast(`Tema "${card.querySelector('.theme-card-name').textContent}" diterapkan`);
+          });
+        });
+
+        // Manual Color Pickers
+        const colorMapping = [
+          { inputId: 'color-canvas-bg', hexId: 'hex-canvas-bg', prop: 'canvasBg' },
+          { inputId: 'color-card-bg', hexId: 'hex-card-bg', prop: 'cardBg' },
+          { inputId: 'color-accent', hexId: 'hex-accent', prop: 'accentColor' },
+          { inputId: 'color-border', hexId: 'hex-border', prop: 'borderColor' }
+        ];
+
+        colorMapping.forEach(({ inputId, hexId, prop }) => {
+          const inputEl = document.getElementById(inputId);
+          const hexEl = document.getElementById(hexId);
+          inputEl.addEventListener('input', (e) => {
+            const val = e.target.value.toUpperCase();
+            state.settings.customColors[prop] = val;
+            hexEl.textContent = val;
+            renderCanvasPreview();
+            saveStateToStorage();
+          });
+        });
+
+        // Load Sample Preset
+        document.getElementById('btn-load-sample').addEventListener('click', () => {
+          const currentSettings = JSON.parse(JSON.stringify(state.settings));
+          state = getSampleState();
+          state.settings = currentSettings;
+          syncFormFromState();
+          renderCanvasPreview();
+          saveStateToStorage();
+          showToast('Data sampel transisi karier berhasil dimuat');
+        });
+
+        // Clear All Modal
+        const modalClear = document.getElementById('modal-clear');
+        document.getElementById('btn-clear-all').addEventListener('click', () => {
+          modalClear.classList.add('open');
+        });
+        document.getElementById('btn-cancel-clear').addEventListener('click', () => {
+          modalClear.classList.remove('open');
+        });
+        document.getElementById('btn-confirm-clear').addEventListener('click', () => {
+          state.meta = {
+            name: '',
+            role: '',
+            date: new Date().toISOString().split('T')[0]
+          };
+          BMY_SCHEMA.forEach((item) => {
+            state.elements[item.id] = '';
+          });
+          syncFormFromState();
+          renderCanvasPreview();
+          saveStateToStorage();
+          modalClear.classList.remove('open');
+          showToast('Seluruh isian kanvas telah dikosongkan');
+        });
+
+        // Export JSON
+        document.getElementById('btn-export-json').addEventListener('click', exportJSON);
+
+        // Import JSON
+        const fileInput = document.getElementById('input-import-json');
+        document.getElementById('btn-import-json').addEventListener('click', () => {
+          fileInput.click();
+        });
+        fileInput.addEventListener('change', importJSON);
+
+        // Export High-Resolution PNG
+        document.getElementById('btn-export-png').addEventListener('click', exportPNG);
+
+        // Export A4 Landscape PDF
+        document.getElementById('btn-export-pdf').addEventListener('click', exportPDF);
+      }
+
+      /* ----------------------------------------------------------------------
+         6. IMPORT & EXPORT FUNCTIONS (JSON, PNG 3x, PDF A4 LANDSCAPE)
+         ---------------------------------------------------------------------- */
+      function getSafeFilename(ext) {
+        const rawName = (state.meta.name || 'personal-canvas')
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-|-$/g, '');
+        return `bmy-${rawName || 'canvas'}.${ext}`;
+      }
+
+      function exportJSON() {
+        const dataStr = JSON.stringify(state, null, 2);
+        const blob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = getSafeFilename('json');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+        showToast('File JSON berhasil diunduh');
+      }
+
+      function importJSON(e) {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function (evt) {
+          try {
+            const imported = JSON.parse(evt.target.result);
+            if (!imported || typeof imported !== 'object' || !imported.elements) {
+              throw new Error('Format JSON tidak sesuai skema Business Model You.');
+            }
+            const fallback = getSampleState();
+            state = {
+              meta: Object.assign({}, fallback.meta, imported.meta || {}),
+              elements: Object.assign({}, fallback.elements, imported.elements || {}),
+              settings: Object.assign({}, fallback.settings, imported.settings || {})
+            };
+            syncFormFromState();
+            renderCanvasPreview();
+            saveStateToStorage();
+            showToast('Konfigurasi JSON berhasil diimpor');
+          } catch (err) {
+            alert('Gagal membaca file JSON: ' + err.message);
+          } finally {
+            e.target.value = '';
+          }
+        };
+        reader.readAsText(file);
+      }
+
+      async function exportPNG() {
+        const btn = document.getElementById('btn-export-png');
+        const canvasEl = document.getElementById('bmy-canvas');
+        btn.disabled = true;
+
+        try {
+          const bgColor = getComputedStyle(canvasEl).getPropertyValue('--c-bg').trim() || '#F8FAFC';
+          const dataUrl = await window.htmlToImage.toPng(canvasEl, {
+            pixelRatio: 3,
+            backgroundColor: bgColor,
+            cacheBust: true
+          });
+
+          const link = document.createElement('a');
+          link.download = getSafeFilename('png');
+          link.href = dataUrl;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+          showToast('Gambar PNG resolusi tinggi (3x) berhasil diunduh');
+        } catch (err) {
+          console.error('Export PNG gagal:', err);
+          alert('Terjadi kesalahan saat mengekspor PNG.');
+        } finally {
+          btn.disabled = false;
+        }
+      }
+
+      async function exportPDF() {
+        const btn = document.getElementById('btn-export-pdf');
+        const canvasEl = document.getElementById('bmy-canvas');
+        btn.disabled = true;
+
+        try {
+          const bgColor = getComputedStyle(canvasEl).getPropertyValue('--c-bg').trim() || '#F8FAFC';
+          const dataUrl = await window.htmlToImage.toPng(canvasEl, {
+            pixelRatio: 2.5,
+            backgroundColor: bgColor,
+            cacheBust: true
+          });
+
+          const { jsPDF } = window.jspdf;
+          // Create A4 Landscape PDF (297mm x 210mm)
+          const pdf = new jsPDF({
+            orientation: 'landscape',
+            unit: 'mm',
+            format: 'a4'
+          });
+
+          const pageWidth = 297;
+          const pageHeight = 210;
+          const margin = 8;
+          const maxWidth = pageWidth - margin * 2;
+          const maxHeight = pageHeight - margin * 2;
+
+          const rect = canvasEl.getBoundingClientRect();
+          const aspect = rect.width / rect.height;
+
+          let renderWidth = maxWidth;
+          let renderHeight = renderWidth / aspect;
+
+          if (renderHeight > maxHeight) {
+            renderHeight = maxHeight;
+            renderWidth = renderHeight * aspect;
+          }
+
+          const offsetX = (pageWidth - renderWidth) / 2;
+          const offsetY = (pageHeight - renderHeight) / 2;
+
+          // Fill sheet background to match canvas theme cleanly
+          pdf.setFillColor(bgColor);
+          pdf.rect(0, 0, pageWidth, pageHeight, 'F');
+
+          pdf.addImage(dataUrl, 'PNG', offsetX, offsetY, renderWidth, renderHeight, undefined, 'FAST');
+          pdf.save(getSafeFilename('pdf'));
+          showToast('Dokumen PDF A4 Landscape berhasil diunduh');
+        } catch (err) {
+          console.error('Export PDF gagal, mengalihkan ke dialog Print A4:', err);
+          window.print();
+        } finally {
+          btn.disabled = false;
+        }
+      }
+
+      /* Toast Helper */
+      let toastTimer = null;
+      function showToast(message) {
+        const toast = document.getElementById('toast');
+        const text = document.getElementById('toast-text');
+        text.textContent = message;
+        toast.classList.add('visible');
+        if (toastTimer) clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => {
+          toast.classList.remove('visible');
+        }, 2600);
+      }
+
+      /* ----------------------------------------------------------------------
+         7. BOOTSTRAP APPLICATION
+         ---------------------------------------------------------------------- */
+      document.addEventListener('DOMContentLoaded', () => {
+        buildDOMStructure();
+        syncFormFromState();
+        renderCanvasPreview();
+        bindEvents();
+      });
+    })();
+  </script>
+</body>
+</html>
